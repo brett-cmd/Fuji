@@ -16,13 +16,14 @@ from acquisition.abstract import AcquisitionMethod, Parameters
 from acquisition.asr import AsrMethod
 from acquisition.rsync import RsyncMethod
 from acquisition.sysdiagnose import SysdiagnoseMethod
+from acquisition.snapshot import SnapshotMountMethod
 from checks.folders import FoldersCheck
 from checks.free_space import FreeSpaceCheck
 from checks.network import NetworkCheck
 from meta import AUTHOR, HOMEPAGE, VERSION
 from shared.utils import command_to_properties, lines_to_properties
 
-METHODS = [AsrMethod(), RsyncMethod(), SysdiagnoseMethod()]
+METHODS = [AsrMethod(), RsyncMethod(), SysdiagnoseMethod(), SnapshotMountMethod()]
 CHECKS = [FoldersCheck(), FreeSpaceCheck(), NetworkCheck()]
 PARAMS = Parameters()
 
@@ -133,7 +134,7 @@ class DevicesWindow(wx.Frame):
             if not line.startswith("/dev/disk"):
                 continue
             identifier, size, used, free, _, _, _, _, mount_point = re.split(
-                "\s+", line, maxsplit=8
+                "\\s+", line, maxsplit=8
             )
             short_identifier = identifier[5:]
             mount_info[short_identifier] = DiskSpaceInfo(
